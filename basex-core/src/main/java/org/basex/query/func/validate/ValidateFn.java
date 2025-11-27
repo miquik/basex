@@ -88,7 +88,7 @@ abstract class ValidateFn extends StandardFunc {
    */
   protected final FNode report(final QueryContext qc) throws QueryException {
     final ArrayList<ErrorInfo> errors = errors(qc);
-    final Checks<ErrorInfo> warnings = ei -> ei.level == Level.WARNING;
+    final Checks<ErrorInfo> warnings = ei -> ei.level == ErrorInfo.Level.WARNING;
 
     final FBuilder report = FElem.build(Q_REPORT);
     report.add(FElem.build(Q_STATUS).add(warnings.all(errors) ? VALID : INVALID));
@@ -121,7 +121,7 @@ abstract class ValidateFn extends StandardFunc {
     } catch(final SAXException ex) {
       // fatal exception: send exceptions to debug output, ignore root exception
       Util.rootException(ex);
-      v.add(ex, Level.FATAL);
+      v.add(ex, ErrorInfo.Level.FATAL);
     } catch(final IOException | ParserConfigurationException | Error ex) {
       throw VALIDATE_START_X.get(info, ex);
     } finally {
